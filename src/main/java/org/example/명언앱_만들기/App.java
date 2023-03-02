@@ -1,8 +1,6 @@
 package org.example.명언앱_만들기;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class App {
     private Scanner sc;
@@ -36,8 +34,6 @@ public class App {
                 System.out.println( lastid + "번 명언이 등록되었습니다.");
             }
 
-            //System.out.println(al.get(0).getWell());
-
             if(커맨드.trim().equals("목록")){
                 System.out.println("번호 / 작가 / 명언\n------------------------------");
 
@@ -50,12 +46,32 @@ public class App {
                 }*/
             }
 
-            /*if(커맨드.startsWith("삭제"))
+            if(커맨드.startsWith("삭제"))
             {
                 String[] commandBits = 커맨드.split("\\?", 2); // 최대 2개까지 나눈다.
-            }*/
+                String actionCode = commandBits[0];
+                Map<String, String> params = new HashMap<>();
+                String[] ch_id = commandBits[1].split("=",2);
 
-            if(커맨드.substring(0,2).equals("삭제")){
+                params.put(ch_id[0], ch_id[1]);
+
+                int delete_num = Integer.parseInt(params.get("id"));
+
+                if(lastdel_num == delete_num){
+                    System.out.println(delete_num + "번 명언은 존재하지 않습니다.");
+                }
+
+                int check = 0;
+                for(int i = 0 ; i < al.size() ; i++){
+                    if(al.get(i).getId() == delete_num) {
+                        al.remove(i);
+                        System.out.println(delete_num + "번 명언이 삭제되었습니다.");
+                        lastdel_num = delete_num;
+                    }
+                }
+            }
+
+            /*if(커맨드.substring(0,2).equals("삭제")){
                 String intStr = 커맨드.replaceAll("[^0-9]","");
 
                 int delete_num = Integer.parseInt(intStr);
@@ -86,7 +102,7 @@ public class App {
                     }
                     i++;
                 }*/
-            }
+            //}
 
             if(커맨드.substring(0,2).equals("수정")) {
                 String intStr = 커맨드.replaceAll("[^0-9]", "");
