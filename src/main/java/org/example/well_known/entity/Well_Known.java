@@ -38,14 +38,4 @@ public class Well_Known {
         this.writer = writer;
         this.content = well;
     }
-    /*void 등록(int id){
-        Scanner sc = new Scanner(System.in);
-        System.out.print("명언 : ");
-        String known = sc.nextLine().trim();
-        System.out.print("작가 : ");
-        String name = sc.nextLine().trim();
-        this.well = known;
-        this.writer = name;
-        this.id = id;
-    }*/
 }
