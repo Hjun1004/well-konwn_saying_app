@@ -1,4 +1,4 @@
-package org.example.명언앱_만들기;
+package org.example.well_known.entity;
 
 import java.util.Scanner;
 

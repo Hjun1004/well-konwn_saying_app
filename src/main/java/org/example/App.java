@@ -1,5 +1,7 @@
 package org.example.명언앱_만들기;
 
+import org.example.well_known.Well_Known;
+
 import java.util.*;
 
 public class App {
@@ -40,10 +42,6 @@ public class App {
                 for(Well_Known sg : al){
                     System.out.printf("%d / %s / %s \n",sg.getId(), sg.getWriter(), sg.getWell());
                 }
-                /*for(int i = count-1 ; i>=0 ; i--){
-                    //if(al.get(i).getId() != 0)
-                    System.out.printf("%d / %s / %s \n",al.get(i).getId(),al.get(i).getWriter(), al.get(i).getWell());
-                }*/
             }
 
             if(커맨드.startsWith("삭제"))
