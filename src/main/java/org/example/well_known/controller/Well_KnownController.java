@@ -2,6 +2,7 @@ package org.example.well_known.controller;
 
 import org.example.Container;
 import org.example.Rq;
+import org.example.service.Well_KnownService;
 import org.example.well_known.entity.Well_Known;
 
 import java.util.ArrayList;
@@ -10,29 +11,39 @@ import java.util.List;
 import java.util.Map;
 
 public class Well_KnownController {
-    private List<Well_Known> al = new ArrayList<>();
-    //Rq rq = new Rq();
+
+    private final Well_KnownService wellKnownService;
+
     private int count;
-    private int lastid = 0;
+
     int id = -1;
+
+    public Well_KnownController(){
+        wellKnownService = new Well_KnownService();
+    }
+
 
     public void write(){
         System.out.print("명언 : ");
         String known = Container.getScanner().nextLine().trim();
         System.out.print("작가 : ");
         String name = Container.getScanner().nextLine().trim();
-        al.add(new Well_Known(++lastid, name, known));
-        //al.get(count).등록(++lastid);
-        count++;
-        System.out.println( lastid + "번 명언이 등록되었습니다.");
+
+        int id = wellKnownService.write(known, name);
+        System.out.println( id + "번 명언이 등록되었습니다.");
     }
 
     public void list(){
-        System.out.println("번호 / 작가 / 명언\n------------------------------");
+
+        List<Well_Known> al = wellKnownService.findAll();
+
+        System.out.println("번호 / 작가 / 명언");
+        System.out.println("-".repeat(30));
 
         for(Well_Known sg : al){
             System.out.printf("%d / %s / %s \n",sg.getId(), sg.getWriter(), sg.getWell());
         }
+        //wellKnownService.list();
     }
 
     public void remove(Rq rq){
@@ -42,37 +53,40 @@ public class Well_KnownController {
             return;
         }
 
-        Well_Known wellKnown = findById(id);
+        Well_Known wellKnown = wellKnownService.findById(id);
+
         if(wellKnown == null){
             System.out.println(id + "번 명언은 존재하지 않습니다.");
             return;
         }
-        al.remove(wellKnown);
+        wellKnownService.remove(wellKnown);
+        //al.remove(wellKnown);
         System.out.println(id + "번 명언이 삭제되었습니다.");
+        //wellKnownService.remove(rq);
     }
 
     public void modify(Rq rq){
-        int mo_id = rq.getIntParam("id",-1);
-        if(mo_id == -1) System.out.println("id 입력해");
+        id = rq.getIntParam("id",-1);
+        if(id == -1) System.out.println("id 입력해");
 
-        for(Well_Known ss : al){
-            if(ss.getId() == mo_id){
-                System.out.println("명언(기존) : " + ss.getWell());
-                System.out.print("명언 : ");
-                ss.setWell(Container.getScanner().nextLine());
-                System.out.println("작가(기존) : " + ss.getWriter());
-                System.out.print("작가 : ");
-                ss.setWriter(Container.getScanner().nextLine());
-            }
+        Well_Known wellKnown = wellKnownService.findById(id);
+
+        if(wellKnown == null){
+            System.out.println(id + "번 명언은 존재하지 않습니다.");
+            return;
         }
+
+        System.out.println("명언(기존) : " + wellKnown.getWell());
+        System.out.print("명언 : ");
+        String content = Container.getScanner().nextLine().trim();
+        //ss.setWell(Container.getScanner().nextLine());
+        System.out.println("작가(기존) : " + wellKnown.getWriter());
+        System.out.print("작가 : ");
+        String authorName = Container.getScanner().nextLine().trim();
+        //ss.setWriter(Container.getScanner().nextLine());
+
+        wellKnownService.modify(wellKnown, content, authorName);
     }
 
-    private Well_Known findById(int id){
-        for(Well_Known sg : al){
-            if(sg.getId() == id){
-                return sg;
-            }
-        }
-        return null;
-    }
+
 }
